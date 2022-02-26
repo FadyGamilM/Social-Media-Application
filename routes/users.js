@@ -1,9 +1,16 @@
 const router = require("express").Router();
+const { protect } = require("../middlewares/authority");
 
 /* --------------------------- import controllers --------------------------- */
-const { getAllUsers } = require("../controllers/users");
+const {
+	// VisitUserProfile,
+	VisitProfile,
+	UpdateProfile,
+	// DeleteProfile,
+} = require("../controllers/users");
 /* -------------------------------------------------------------------------- */
 
-router.route("/").get(getAllUsers);
-
+// router.route("/:id").get(VisitUserProfile).put(protect, UpdateProfile).delete();
+router.route("/profile").get(protect, VisitProfile);
+router.route("/:id").put(protect, UpdateProfile);
 module.exports = router;

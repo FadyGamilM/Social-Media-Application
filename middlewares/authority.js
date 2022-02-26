@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+const { User } = require("../models/user");
 
 exports.protect = async (req, res, next) => {
 	try {
@@ -14,6 +14,7 @@ exports.protect = async (req, res, next) => {
 					token = req.headers.authorization.split(" ")[1];
 					// verify the token
 					const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+					console.log("Decoded token is " + decodedToken.id);
 					// get the user id from the token
 					// and we don't need the password to be returned
 					// so we perform projection "-password" means execlude the password field
