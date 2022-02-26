@@ -1,5 +1,5 @@
 # Social-Media-Application
-### This is the backend for a social media application similar to facebook
+>#### This is the backend for a social media application
 
 ## Technologies that used to build this application
   - Node.js as a runtime environment
