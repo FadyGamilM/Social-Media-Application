@@ -1,5 +1,6 @@
 /* --------------------------- Essential Libraries -------------------------- */
 const express = require("express");
+const mongoose = require("mongoose");
 require("dotenv").config();
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -7,8 +8,11 @@ const colors = require("colors");
 /* -------------------------------------------------------------------------- */
 
 /* --------------------------- Connect to database -------------------------- */
-const { connectToDatabase } = require("./config/db_connection");
-connectToDatabase();
+// const { connectToDatabase } = require("./config/db_connection");
+// connectToDatabase();
+mongoose.connect(process.env.MONGO_URL, {}, () => {
+	console.log(`Server is connected to DB`.green.inverse);
+});
 /* -------------------------------------------------------------------------- */
 
 /* ------------ import all different routes to server them later ------------ */
