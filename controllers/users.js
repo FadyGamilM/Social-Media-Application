@@ -1,7 +1,7 @@
 const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
 
-// @Description			logged-in user can view his/her own profile
+// @Description: logged-in user can view his/her own profile
 exports.VisitProfile = async (req, res, next) => {
 	try {
 		// req.user contains the current logged-in user
@@ -25,7 +25,7 @@ exports.VisitProfile = async (req, res, next) => {
 	}
 };
 
-// @Description			User can view other users profiles
+// @Description: User can view other users profiles
 exports.VisitUserProfile = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.params.id);
@@ -45,7 +45,7 @@ exports.VisitUserProfile = async (req, res, next) => {
 	}
 };
 
-// @Description			User can update his/her own profile only
+// @Description: User can update his/her own profile only
 exports.UpdateProfile = async (req, res, next) => {
 	try {
 		if (req.params.id !== req.user.id) {
@@ -77,7 +77,7 @@ exports.UpdateProfile = async (req, res, next) => {
 	}
 };
 
-// @Description			User can delete his own profile only
+// @Description: User can delete his own profile only
 exports.DeleteProfile = async (req, res, next) => {
 	try {
 		if (req.params.id !== req.user.id) {
@@ -97,7 +97,7 @@ exports.DeleteProfile = async (req, res, next) => {
 	}
 };
 
-// @Description			User can follow another user
+// @Description: User can follow another user
 exports.Follow = async (req, res, next) => {
 	try {
 		// if user try to follow him/her-self
@@ -126,6 +126,38 @@ exports.Follow = async (req, res, next) => {
 		});
 		return res.status(200).json({
 			data: "user is followed",
+		});
+	} catch (error) {
+		return res.status(500).json({
+			error: "server error, we are working on it",
+			message: error.message,
+		});
+	}
+};
+
+// @Description: User can unfollow another user
+exports.Unfollow = async (req, res, next) => {
+	try {
+		// we need to get the unfollower and the one who will be unfollowed to relate them together
+		let unfollower = await User.findById(req.user.id);
+		let unfollowed = await User.findById(req.params.id);
+		if (unfollower.followings.includes(req.params.id)) {
+			await unfollower.updateOne({
+				$pull: {
+					followings: req.params.id,
+				},
+			});
+			await unfollowed.updateOne({
+				$pull: {
+					followers: req.user.id,
+				},
+			});
+			return res.status(200).json({
+				data: "user is unfollowed",
+			});
+		}
+		return res.status(200).json({
+			data: "you are not following this user, you can't unfollow him/her",
 		});
 	} catch (error) {
 		return res.status(500).json({
