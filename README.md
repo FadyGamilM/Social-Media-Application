@@ -8,7 +8,7 @@
   - Mongoose as ORM
   - Mongo Atlas as cloud host for Database
 
------------------------------------------
+
 
 ## Supported Features
   - Authentication features using email, password combinations
