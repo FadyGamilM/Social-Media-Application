@@ -3,14 +3,18 @@ const { protect } = require("../middlewares/authority");
 
 /* --------------------------- import controllers --------------------------- */
 const {
-	// VisitUserProfile,
+	VisitUserProfile,
 	VisitProfile,
 	UpdateProfile,
-	// DeleteProfile,
+	DeleteProfile,
 } = require("../controllers/users");
 /* -------------------------------------------------------------------------- */
 
 // router.route("/:id").get(VisitUserProfile).put(protect, UpdateProfile).delete();
 router.route("/profile").get(protect, VisitProfile);
-router.route("/:id").put(protect, UpdateProfile);
+router
+	.route("/:id")
+	.put(protect, UpdateProfile)
+	.delete(protect, DeleteProfile)
+	.get(VisitUserProfile);
 module.exports = router;
